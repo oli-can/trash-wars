@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trash Bandits: Raccoon Tower Defense</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+  <div id="gameContainer">
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="ui">
+      <div>💰 Coins: <span id="coins">100</span></div>
+      <div>❤️ Health: <span id="health">20</span></div>
+      <div>🌊 Wave: <span id="wave">1</span></div>
+      <div>🦝 Enemies: <span id="enemies">0</span></div>
+    </div>
+
+    <div id="controls">
+      <button id="startWave">Start Wave</button>
+      <button id="pauseGame">Pause</button>
+      <button id="showStats">📊 Stats</button>
+    </div>
+
+    <div id="towerSelection">
+      <div class="tower-btn" data-tower="basic">🎯<div>Basic</div><div>$20</div></div>
+      <div class="tower-btn" data-tower="sniper">🔭<div>Sniper</div><div>$50</div></div>
+      <div class="tower-btn" data-tower="splash">💥<div>Splash</div><div>$75</div></div>
+      <div class="tower-btn" data-tower="freezer">❄️<div>Freezer</div><div>$40</div></div>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
