@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #2c3e2d, #1a2b1d);
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  overflow: hidden;
+}
+
+#gameContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+#gameCanvas {
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 30% 70%, #3a4a3b 0%, #2c3e2d 50%, #1a2b1d 100%);
+  cursor: crosshair;
+  display: block;
+}
+
+#ui, #controls {
+  position: absolute;
+  background: rgba(0,0,0,0.8);
+  padding: 15px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid #4CAF50;
+}
+
+#ui { top: 20px; left: 20px; }
+#controls { top: 20px; right: 20px; }
+
+#towerSelection {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.9);
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  gap: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid #4CAF50;
+}
+
+.tower-btn {
+  width: 80px;
+  height: 80px;
+  border: 3px solid #4CAF50;
+  background: rgba(76,175,80,0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+}
+
+.tower-btn:hover {
+  transform: scale(1.1);
+  background: rgba(76,175,80,0.4);
+  box-shadow: 0 0 20px rgba(76,175,80,0.5);
+}
+
+.tower-btn.selected {
+  background: rgba(76,175,80,0.6);
+  transform: scale(1.05);
+}
+
+button {
+  background: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 5px;
+  transition: background 0.3s;
+}
+
+button:hover { background: #45a049; }
+button:disabled { background: #666; cursor: not-allowed; }
