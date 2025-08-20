@@ -416,35 +416,76 @@
             document.querySelector(`[data-tower="${type}"]`).classList.add('selected');
         }
 
-        function handleCanvasClick(event) {
-            const rect = canvas.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
 
-            if (gameState.selectedTower && canPlaceTower(x, y)) {
-                const towerType = towerTypes[gameState.selectedTower];
-                if (gameState.coins >= towerType.cost) {
-                    createTower(x, y, gameState.selectedTower);
-                    gameState.coins -= towerType.cost;
-                }
-            }
+        function handleCanvasClick(e) {
+    const rect = gameState.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    let clickedTower = null;
+    for (let tower of gameState.towers) {
+        if (Math.hypot(x - tower.x, y - tower.y) < 25) {
+            clickedTower = tower;
+            break;
         }
+    }
 
-        function canPlaceTower(x, y) {
-            // Check if too close to path
-            for (let point of path) {
-                const distance = Math.sqrt((x - point.x) ** 2 + (y - point.y) ** 2);
-                if (distance < 50) return false;
-            }
+    if (clickedTower) {
+        showTowerManagement(clickedTower, x, y);
+        return;
+    }
 
-            // Check if too close to other towers
-            for (let tower of gameState.towers) {
-                const distance = Math.sqrt((x - tower.x) ** 2 + (y - tower.y) ** 2);
-                if (distance < 60) return false;
-            }
+    if (gameState.selectedTower) {
+        closeTowerManagement();
+        return;
+    }
 
-            return true;
+    if (!gameState.selectedTowerType) return;
+
+    const towerType = towerTypes[gameState.selectedTowerType];
+
+    if (gameState.coins >= towerType.cost && canPlaceTower(x, y)) {
+        const newTower = {
+            x: x,
+            y: y,
+            type: gameState.selectedTowerType,
+            level: 1,
+            totalInvestment: towerType.cost,
+            lastFired: 0,
+            target: null,
+            angle: 0,
+            ...getTowerStats(gameState.selectedTowerType, 1)
+        };
+
+        gameState.towers.push(newTower);
+        gameState.coins -= towerType.cost;
+        updateUI();
+
+        createParticles(x, y, towerType.color, 8);
+    } else {
+        // 🚨 Invalid placement feedback
+        showPlacementError(x, y);
+    }
+}
+
+function showPlacementError(x, y) {
+    const ctx = gameState.ctx;
+    ctx.save();
+    ctx.fillStyle = "red";
+    ctx.font = "20px Arial";
+    ctx.fillText("❌ Can't place here!", x + 25, y - 25);
+    ctx.restore();
+
+    // Small screen shake effect
+    let i = 0;
+    const interval = setInterval(() => {
+        gameState.canvas.style.transform = `translate(${(i % 2 === 0 ? 4 : -4)}px, 0)`;
+        if (++i > 4) {
+            clearInterval(interval);
+            gameState.canvas.style.transform = "translate(0,0)";
         }
+    }, 50);
+}
 
         function createTower(x, y, type) {
             const towerData = towerTypes[type];
