@@ -665,56 +665,75 @@
         }
 
         function handleCanvasClick(e) {
-            const rect = game.canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            // Check if clicking on existing tower
-            let clickedTower = null;
-            for (let tower of game.towers) {
-                if (Math.hypot(x - tower.x, y - tower.y) < 25) {
-                    clickedTower = tower;
-                    break;
-                }
-            }
-            
-            if (clickedTower) {
-                showTowerManagement(clickedTower, x, y);
-                return;
-            }
-            
-            // Close tower management if clicking elsewhere
-            if (game.selectedTower) {
-                closeTowerManagement();
-                return;
-            }
-            
-            // Place new tower
-            if (!game.selectedTowerType) return;
-            
-            const towerType = towerTypes[game.selectedTowerType];
-            
-            if (game.coins >= towerType.cost && canPlaceTower(x, y)) {
-                const newTower = {
-                    x: x,
-                    y: y,
-                    type: game.selectedTowerType,
-                    level: 1,
-                    totalInvestment: towerType.cost,
-                    lastFired: 0,
-                    target: null,
-                    angle: 0,
-                    ...getTowerStats(game.selectedTowerType, 1)
-                };
-                
-                game.towers.push(newTower);
-                game.coins -= towerType.cost;
-                updateUI();
-                
-                // Add placement effect
-                createParticles(x, y, towerType.color, 8);
-            }
+    const rect = game.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    let clickedTower = null;
+    for (let tower of game.towers) {
+        if (Math.hypot(x - tower.x, y - tower.y) < 25) {
+            clickedTower = tower;
+            break;
         }
+    }
+
+    if (clickedTower) {
+        showTowerManagement(clickedTower, x, y);
+        return;
+    }
+
+    if (game.selectedTower) {
+        closeTowerManagement();
+        return;
+    }
+
+    if (!game.selectedTowerType) return;
+
+    const towerType = towerTypes[game.selectedTowerType];
+
+    if (game.coins >= towerType.cost && canPlaceTower(x, y)) {
+        const newTower = {
+            x: x,
+            y: y,
+            type: game.selectedTowerType,
+            level: 1,
+            totalInvestment: towerType.cost,
+            lastFired: 0,
+            target: null,
+            angle: 0,
+            ...getTowerStats(game.selectedTowerType, 1)
+        };
+
+        game.towers.push(newTower);
+        game.coins -= towerType.cost;
+        updateUI();
+
+        createParticles(x, y, towerType.color, 8);
+    } else {
+        // 🚨 Invalid placement feedback
+        showPlacementError(x, y);
+    }
+}
+
+function showPlacementError(x, y) {
+    const ctx = game.ctx;
+    ctx.save();
+    ctx.fillStyle = "red";
+    ctx.font = "20px Arial";
+    ctx.fillText("❌ Can't place here!", x + 25, y - 25);
+    ctx.restore();
+
+    // Small screen shake effect
+    let i = 0;
+    const interval = setInterval(() => {
+        game.canvas.style.transform = `translate(${(i % 2 === 0 ? 4 : -4)}px, 0)`;
+        if (++i > 4) {
+            clearInterval(interval);
+            game.canvas.style.transform = "translate(0,0)";
+        }
+    }, 50);
+}
+
         
         function handleMouseMove(e) {
             const rect = game.canvas.getBoundingClientRect();
@@ -770,37 +789,40 @@
             const sellValueSpan = document.getElementById('sellValue');
             
             if (tower.level < 4) {
-                const upgradeCost = towerTypes[tower.type].upgradeCost[tower.level - 1];
-                upgradeCostSpan.textContent = ' + upgradeCost;
+                if (game.selectedTower.level >= 4 || !towerTypes[game.selectedTower.type].upgradeCost[game.selectedTower.level - 1]) return;
+                upgradeCostSpan.textContent = `$${upgradeCost}`;
                 upgradeBtn.disabled = game.coins < upgradeCost;
             } else {
                 upgradeCostSpan.textContent = 'MAX';
                 upgradeBtn.disabled = true;
             }
             
-            sellValueSpan.textContent = ' + Math.floor(tower.totalInvestment * 0.6);
+            sellValueSpan.textContent = `$${Math.floor(tower.totalInvestment * 0.6)}`;
         }
         
         function upgradeTower() {
-            if (!game.selectedTower || game.selectedTower.level >= 4) return;
-            
-            const upgradeCost = towerTypes[game.selectedTower.type].upgradeCost[game.selectedTower.level - 1];
-            if (game.coins < upgradeCost) return;
-            
-            game.coins -= upgradeCost;
-            game.selectedTower.level++;
-            game.selectedTower.totalInvestment += upgradeCost;
-            
-            // Update tower stats
-            const newStats = getTowerStats(game.selectedTower.type, game.selectedTower.level);
-            Object.assign(game.selectedTower, newStats);
-            
-            // Visual upgrade effect
-            createParticles(game.selectedTower.x, game.selectedTower.y, '#FFD700', 12);
-            
-            // Refresh management panel
-            showTowerManagement(game.selectedTower, parseInt(document.getElementById('towerManagement').style.left), parseInt(document.getElementById('towerManagement').style.top));
-            updateUI();
+    if (!game.selectedTower || game.selectedTower.level >= 4) return;
+    
+    const nextUpgrade = towerTypes[game.selectedTower.type].upgradeCost[game.selectedTower.level - 1];
+    if (!nextUpgrade || game.coins < nextUpgrade) return;
+
+    game.coins -= nextUpgrade;
+    game.selectedTower.level++;
+    game.selectedTower.totalInvestment += nextUpgrade;
+
+    const newStats = getTowerStats(game.selectedTower.type, game.selectedTower.level);
+    Object.assign(game.selectedTower, newStats);
+
+    createParticles(game.selectedTower.x, game.selectedTower.y, '#FFD700', 12);
+
+    showTowerManagement(
+        game.selectedTower,
+        parseInt(document.getElementById('towerManagement').style.left),
+        parseInt(document.getElementById('towerManagement').style.top)
+    );
+    updateUI();
+}
+
         }
         
         function deleteTower() {
@@ -1330,17 +1352,23 @@
         }
 
         function gameLoop() {
-            if (!game.isPaused) {
-                updateEnemies();
-                updateTowers();
-                updateProjectiles();
-                updateParticles();
-                updateUI();
-            }
-            
-            render();
-            requestAnimationFrame(gameLoop);
+    try {
+        if (!game.isPaused) {
+            updateEnemies();
+            updateTowers();
+            updateProjectiles();
+            updateParticles();
+            updateUI();
         }
+        render();
+    } catch (err) {
+        console.error("Game loop error:", err);
+        alert("An unexpected error occurred. Check the console for details.");
+        game.isPaused = true;
+    }
+    requestAnimationFrame(gameLoop);
+}
+
 
         // Start the game
         init();
