@@ -97,3 +97,40 @@ export function handleTowerPlacement(canvas, towers) {
     });
 }
 
+
+//build towers
+// src/game/towers.js
+
+import { towerConfig } from '../config/tower.js'; // Corrected import
+import { checkCollisionWithPath, checkCollisionWithTowers } from './collision.js'; // If you have a collision helper
+
+export class Tower {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = towerConfig.size;
+    this.range = towerConfig.range;
+    this.cost = towerConfig.cost;
+    this.canPlace = true; // Will be set dynamically on hover
+  }
+
+  draw(ctx) {
+    ctx.fillStyle = this.canPlace ? 'green' : 'red';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Optional: draw range circle
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  update(towers, path) {
+    // Check collisions
+    this.canPlace = !checkCollisionWithPath(this, path) &&
+                    !checkCollisionWithTowers(this, towers);
+  }
+}
+
