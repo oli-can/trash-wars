@@ -40,7 +40,7 @@ ctx.stroke();
   updateUI();
 
 
-  //Draw UI to preexisting norms
+  //Draw UI from first moment of the game
 import { drawUI } from './game/ui.js';
 
 function gameLoop() {
