@@ -58,3 +58,10 @@ gameLoop();
 }
 
 requestAnimationFrame(gameLoop);
+
+
+towers.forEach(tower => {
+  tower.update(towers, path); // Update placement status
+  tower.draw(ctx);            // Draw tower
+});
+
