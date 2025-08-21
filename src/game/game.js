@@ -1,6 +1,6 @@
 import { initLoop } from './loop.js';
 import { Path } from './path.js';
-import { TowerManager } from './tower.js';
+import { TowerManager } from './towers.js'; // FIXED import
 import { UI } from './ui.js';
 import { config } from '../config/config.js';
 
@@ -47,7 +47,7 @@ export const Game = {
   update(deltaTime) {
     this.towers.update(deltaTime);
     this.ui.update(deltaTime);
-    // Add other game updates here (enemies, projectiles, etc.)
+    // TODO: add enemies, projectiles, collisions here later
   },
 
   render() {
