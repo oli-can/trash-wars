@@ -98,39 +98,39 @@ export function handleTowerPlacement(canvas, towers) {
 }
 
 
-//build towers
+//Place towers
 // src/game/towers.js
+import { Tower } from './tower.js';
+import { towerConfig } from '../config/tower.js';
+import { checkCollisionWithPath, checkCollisionWithTowers } from './collision.js';
 
-import { towerConfig } from '../config/tower.js'; // Corrected import
-import { checkCollisionWithPath, checkCollisionWithTowers } from './collision.js'; // If you have a collision helper
-
-export class Tower {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.size = towerConfig.size;
-    this.range = towerConfig.range;
-    this.cost = towerConfig.cost;
-    this.canPlace = true; // Will be set dynamically on hover
+export class TowerManager {
+  constructor(canvas, ctx, path, state) {
+    this.canvas = canvas;
+    this.ctx = ctx;
+    this.path = path;
+    this.state = state;
+    this.towers = [];
   }
 
-  draw(ctx) {
-    ctx.fillStyle = this.canPlace ? 'green' : 'red';
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
-    ctx.fill();
+  handleClick(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    // Optional: draw range circle
-    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
-    ctx.stroke();
+    const newTower = new Tower(x, y, towerConfig);
+    if (!checkCollisionWithPath(newTower, this.path) &&
+        !checkCollisionWithTowers(newTower, this.towers)) {
+      this.towers.push(newTower);
+      this.state.money -= newTower.cost;
+    }
   }
 
-  update(towers, path) {
-    // Check collisions
-    this.canPlace = !checkCollisionWithPath(this, path) &&
-                    !checkCollisionWithTowers(this, towers);
+  update(deltaTime) {
+    this.towers.forEach(t => t.update(deltaTime));
+  }
+
+  render() {
+    this.towers.forEach(t => t.draw(this.ctx));
   }
 }
-
