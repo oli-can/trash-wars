@@ -16,14 +16,18 @@ export function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw path
-  ctx.beginPath();
-  ctx.moveTo(path[0].x, path[0].y);
-  for (let i = 1; i < path.length; i++) {
-    ctx.lineTo(path[i].x, path[i].y);
-  }
-  ctx.strokeStyle = "#555";
-  ctx.lineWidth = 20;
-  ctx.stroke();
+ // inside gameLoop in loop.js
+ctx.beginPath();
+ctx.moveTo(path[0].x, path[0].y);
+for (let i = 1; i < path.length; i++) {
+  ctx.lineTo(path[i].x, path[i].y);
+}
+ctx.strokeStyle = "#555";
+ctx.lineWidth = 40; // make path wider so it looks like a real road
+ctx.lineCap = "round";
+ctx.lineJoin = "round";
+ctx.stroke();
+
 
   updateEnemies();
   updateTowers();
