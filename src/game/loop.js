@@ -39,6 +39,21 @@ ctx.stroke();
 
   updateUI();
 
+
+  //Draw UI to preexisting norms
+import { drawUI } from './game/ui.js';
+
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawMap();        // your existing function
+    drawPath();       // your existing function
+    drawUI();         // tower placement & previews
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+
   requestAnimationFrame(gameLoop);
 }
 
