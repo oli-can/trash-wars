@@ -51,18 +51,26 @@ export class TowerManager {
     this.towers = [];
   }
 
-  handleClick(e) {
-    const rect = this.canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  handleClick(e, type = 'basic') {
+  const rect = this.canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
-    const newTower = new Tower(x, y, towerConfig);
-    if (!checkCollisionWithPath(newTower, this.path) &&
-        !checkCollisionWithTowers(newTower, this.towers)) {
+  const config = towerTypes[type];
+  const newTower = new Tower(x, y, config);
+
+  if (newTower.isValidPlacement(this.towers)) {
+    if (this.state.money >= newTower.cost) {
+      newTower.isPlaced = true;
       this.towers.push(newTower);
       this.state.money -= newTower.cost;
+    } else {
+      console.log("Not enough money to place tower.");
     }
+  } else {
+    console.log("Invalid placement.");
   }
+}
 
   update(deltaTime) {
     this.towers.forEach(t => t.update(deltaTime));
