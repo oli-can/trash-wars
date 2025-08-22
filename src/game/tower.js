@@ -2,27 +2,33 @@
 import { pathSegments } from '../config/path.js';
 
 export class Tower {
-  constructor(x, y, options = {}) {
+  constructor(x, y, config = {}) {
     this.x = x;
     this.y = y;
-    this.radius = options.radius || 20;
-    this.range = options.range || 100;
-    this.fireRate = options.fireRate || 1;
+    this.radius = config.radius || 20;
+    this.range = config.range || 100;
+    this.fireRate = config.fireRate || 1000;
+    this.cost = config.cost || 20;
+    this.damage = config.damage || 10;
+    this.color = config.color || 'gray';
+    this.splash = config.splash || false;
+    this.slow = config.slow || false;
     this.lastShot = 0;
-    this.isPlaced = options.isPlaced || false;
-    this.cost = options.cost || 50; // Keep cost for money system
+    this.isPlaced = config.isPlaced || false;
   }
 
   draw(ctx) {
     ctx.save();
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = this.isValidPlacement() ? 'rgba(0,200,0,0.5)' : 'rgba(200,0,0,0.5)';
+    ctx.fillStyle = this.isValidPlacement() ? this.color : 'rgba(200,0,0,0.5)';
     ctx.fill();
     ctx.strokeStyle = 'black';
     ctx.stroke();
     ctx.restore();
   }
+}
+
 
   isValidPlacement(existingTowers = []) {
     // Prevent overlap with path
