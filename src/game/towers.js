@@ -37,11 +37,6 @@ export function handleTowerPlacement(canvas, towers) {
     });
 }
 
-
-//Place towers
-// src/game/towers.js
-
-
 export class TowerManager {
   constructor(canvas, ctx, path, state) {
     this.canvas = canvas;
