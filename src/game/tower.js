@@ -27,7 +27,7 @@ export class Tower {
     ctx.stroke();
     ctx.restore();
   }
-}
+
 
 
   isValidPlacement(existingTowers = []) {
