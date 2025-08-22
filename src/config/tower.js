@@ -35,3 +35,6 @@ export const towerTypes = {
     color: "#00BCD4"
   }
 };
+
+
+export const TILE_SIZE = 32; 
