@@ -79,3 +79,4 @@ export class TowerManager {
   render() {
     this.towers.forEach(t => t.draw(this.ctx));
   }
+}
