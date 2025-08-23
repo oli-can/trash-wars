@@ -1,6 +1,6 @@
 import { gameState } from "./state.js";
 import { Tower } from './tower.js';
-import { pathTiles } from './config/path.js'; // Make sure this exports your path rectangles
+import { pathTiles } from '/config/path.js'; // Make sure this exports your path rectangles
 
 export function updateUI() {
   document.getElementById("coins").textContent = gameState.coins;
