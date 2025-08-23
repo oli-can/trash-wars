@@ -13,7 +13,7 @@ export function init() {
   c.height = window.innerHeight;
 
   // Create towerManager here
-  towerManager = new TowerManager(gameState.canvas, gameState.ctx, gameState.path, gameState.state);
+  towerManager = new towerManager(gameState.canvas, gameState.ctx, gameState.path, gameState.state);
 
   // Events
   c.addEventListener("click", (e) => {
