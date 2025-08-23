@@ -51,7 +51,7 @@ export class TowerManager {
   const y = e.clientY - rect.top;
 
   const config = towerTypes[type];
-  const newTower = new Tower(x, y, config);
+  const newTower = new tower(x, y, config);
 
   if (newTower.isValidPlacement(this.towers)) {
     if (this.state.money >= newTower.cost) {
