@@ -1,6 +1,6 @@
 // src/game/tower.js
 import { path } from '../config/path.js';
-import { Tower } from './tower.js';
+import { tower } from './tower.js';
 import { towerConfig } from '../config/tower.js';
 import { checkCollisionWithPath, checkCollisionWithTowers } from './collision.js';
 
@@ -13,7 +13,7 @@ export function handleTowerPlacement(canvas, towers) {
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        currentTower = new Tower(x, y, { isPlaced: false });
+        currentTower = new tower(x, y, { isPlaced: false });
         towers.push(currentTower);
     });
 
