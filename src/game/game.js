@@ -1,5 +1,5 @@
 import { initLoop } from './loop.js';
-import { Path } from './path.js';
+import { Path } from '../config/path.js';
 import { TowerManager } from './towers.js'; // FIXED import
 import { UI } from './ui.js';
 import { config } from '../config/config.js';
