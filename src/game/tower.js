@@ -1,7 +1,7 @@
 // src/game/tower.js
 import { path } from '../config/path.js';
 
-export class Tower {
+export class tower {
   constructor(x, y, config = {}) {
     this.x = x;
     this.y = y;
