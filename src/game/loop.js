@@ -1,6 +1,6 @@
 import { gameState } from "./state.js";
 import { updateEnemies, drawEnemies } from "./enemies.js";
-import { updateTowers, drawTowers } from "./towers.js";
+import { updateTowers, drawTowers } from "./tower.js";
 import { updateProjectiles, drawProjectiles } from "./projectiles.js";
 import { path } from "../config/path.js";
 import { updateUI } from "./ui.js";
