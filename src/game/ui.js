@@ -9,7 +9,7 @@ export function updateUI() {
 
 //Tower Logic appending base ui state
 import { Tower } from './tower.js';
-import { pathTiles } from './path.js'; // Make sure this exports your path rectangles
+import { pathTiles } from './config/path.js'; // Make sure this exports your path rectangles
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
