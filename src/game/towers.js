@@ -1,7 +1,7 @@
 // src/game/tower.js
 import { path } from '../config/path.js';
 import { tower } from './tower.js';
-import { towerConfig } from '../config/tower.js';
+import { towerTypes } from '../config/tower.js';
 import { checkCollisionWithPath, checkCollisionWithTowers } from './collision.js';
 
 
