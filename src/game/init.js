@@ -4,8 +4,6 @@ import { startWave } from "./waves.js";
 import { togglePause } from "./controls.js";
 
 
-let towerManager; // declare it at module scope so other code can also use it
-
 export function init() {
   const c = document.getElementById("gameCanvas");
   gameState.canvas = c;
