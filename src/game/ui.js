@@ -30,7 +30,7 @@ canvas.addEventListener('click', () => {
     const towerX = mouseX - towerSize / 2;
     const towerY = mouseY - towerSize / 2;
     if (canPlaceTower(towerX, towerY)) {
-        towers.push(new Tower(towerX, towerY, towerSize));
+        towers.push(new tower(towerX, towerY, towerSize));
     }
 });
 
