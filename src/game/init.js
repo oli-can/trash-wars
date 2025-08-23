@@ -1,5 +1,5 @@
 import { gameState, canvas, ctx } from "./state.js";
-import { selectTower } from "./towers.js";
+import { towerManager } from "./towers.js";
 import { startWave } from "./waves.js";
 import { togglePause } from "./controls.js";
 
