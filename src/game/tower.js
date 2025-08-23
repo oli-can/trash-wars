@@ -1,5 +1,5 @@
 // src/game/tower.js
-import { pathSegments } from '../config/path.js';
+import { pathTiles } from '../config/path.js';
 
 export class Tower {
   constructor(x, y, config = {}) {
@@ -32,9 +32,9 @@ export class Tower {
 
   isValidPlacement(existingTowers = []) {
     // Prevent overlap with path
-    for (const segment of pathSegments) {
-      if (this.x > segment.x && this.x < segment.x + segment.width &&
-          this.y > segment.y && this.y < segment.y + segment.height) {
+    for (const segment of pathTiles) {
+      if (this.x > tiles.x && this.x < tiles.x + tiles.width &&
+          this.y > tiles.y && this.y < tiles.y + tiles.height) {
         return false;
       }
     }
