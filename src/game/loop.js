@@ -6,7 +6,7 @@ import { path } from "../config/path.js";
 import { updateUI } from "./ui.js";
 import { drawUI } from './ui.js';
 
-// ✅ Single gameLoop definition
+// Single gameLoop definition
 export function gameLoop() {
   if (!gameState.gameRunning || gameState.isPaused) {
     requestAnimationFrame(gameLoop);
