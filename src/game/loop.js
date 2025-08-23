@@ -4,7 +4,7 @@ import { updateTowers, drawTowers } from "./towers.js";
 import { updateProjectiles, drawProjectiles } from "./projectiles.js";
 import { path } from "../config/path.js";
 import { updateUI } from "./ui.js";
-import { drawUI } from './game/ui.js';
+import { drawUI } from './ui.js';
 
 // ✅ Single gameLoop definition
 export function gameLoop() {
