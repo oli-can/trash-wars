@@ -16,9 +16,9 @@ export function init() {
   document.getElementById("startWave").addEventListener("click", startWave);
   document.getElementById("pauseGame").addEventListener("click", togglePause);
 
-  document.querySelectorAll(".tower-btn").forEach(btn => {
-    btn.addEventListener("click", () => selectTower(btn.dataset.tower));
-  });
+ document.querySelectorAll(".tower-btn").forEach(btn => {
+  btn.addEventListener("click", () => towerManager.selectTower(btn.dataset.tower));
+});
 
   window.addEventListener("resize", () => {
     c.width = window.innerWidth;
