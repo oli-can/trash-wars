@@ -1,5 +1,5 @@
 import { initLoop } from './loop.js';
-import { Path } from '../config/path.js';
+import { path } from '../config/path.js';
 import { TowerManager } from './towers.js'; // FIXED import
 import { UI } from './ui.js';
 import { config } from '../config/config.js';
@@ -26,7 +26,7 @@ export const Game = {
     this.ctx = this.canvas.getContext('2d');
 
     // Initialize modules
-    this.path = new Path(this.canvas, this.ctx);
+    this.path = new path(this.canvas, this.ctx);
     this.towers = new TowerManager(this.canvas, this.ctx, this.path, this.state);
     this.ui = new UI(this.canvas, this.ctx, this.state);
 
