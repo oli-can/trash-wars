@@ -38,7 +38,7 @@ ctx.stroke();
   drawProjectiles();
 
   updateUI();
-
+}
 
   //Draw UI from first moment of the game
 import { drawUI } from './game/ui.js';
