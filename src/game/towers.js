@@ -36,35 +36,41 @@ export function handleTowerPlacement(canvas, towers) {
     });
 }
 
-export class towerManager {
+export class TowerManager {
   constructor(canvas, ctx, path, state) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.path = path;
     this.state = state;
     this.towers = [];
+    this.selectedType = null; // currently selected tower type
   }
 
-  handleClick(e, type = 'basic') {
-  const rect = this.canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  // New method for selecting a tower type
+  selectTower(type) {
+    this.selectedType = type;
+    console.log(`Selected tower type: ${type}`);
+  }
 
-  const config = towerTypes[type];
-  const newTower = new tower(x, y, config);
+  // Existing placement method, now uses selectedType
+  handleClick(x, y) {
+    if (!this.selectedType) return; // nothing selected
 
-  if (newTower.isValidPlacement(this.towers)) {
-    if (this.state.money >= newTower.cost) {
-      newTower.isPlaced = true;
-      this.towers.push(newTower);
-      this.state.money -= newTower.cost;
+    const config = towerTypes[this.selectedType];
+    const newTower = new Tower(x, y, config);
+
+    if (newTower.isValidPlacement(this.towers)) {
+      if (this.state.money >= newTower.cost) {
+        newTower.isPlaced = true;
+        this.towers.push(newTower);
+        this.state.money -= newTower.cost;
+      } else {
+        console.log("Not enough money to place tower.");
+      }
     } else {
-      console.log("Not enough money to place tower.");
+      console.log("Invalid placement.");
     }
-  } else {
-    console.log("Invalid placement.");
   }
-}
 
   update(deltaTime) {
     this.towers.forEach(t => t.update(deltaTime));
@@ -73,4 +79,3 @@ export class towerManager {
   render() {
     this.towers.forEach(t => t.draw(this.ctx));
   }
-}
