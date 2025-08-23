@@ -36,7 +36,7 @@ export function handleTowerPlacement(canvas, towers) {
     });
 }
 
-export class TowerManager {
+export class towerManager {
   constructor(canvas, ctx, path, state) {
     this.canvas = canvas;
     this.ctx = ctx;
