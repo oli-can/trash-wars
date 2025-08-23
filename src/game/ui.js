@@ -1,4 +1,6 @@
 import { gameState } from "./state.js";
+import { Tower } from './tower.js';
+import { pathTiles } from './config/path.js'; // Make sure this exports your path rectangles
 
 export function updateUI() {
   document.getElementById("coins").textContent = gameState.coins;
@@ -8,8 +10,7 @@ export function updateUI() {
 }
 
 //Tower Logic appending base ui state
-import { Tower } from './tower.js';
-import { pathTiles } from './config/path.js'; // Make sure this exports your path rectangles
+
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
