@@ -5,7 +5,7 @@ import { UI } from './ui.js';
 import { config } from '../config/config.js';
 
 // Main game object
-export const Game = {
+export const gameState = {
   canvas: null,
   ctx: null,
   path: null,
@@ -63,5 +63,5 @@ export const Game = {
 
 // Initialize game when DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
-  Game.init();
+  gameState.init();
 });
