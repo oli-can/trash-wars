@@ -57,7 +57,7 @@ export class TowerManager {
     if (!this.selectedType) return; // nothing selected
 
     const config = towerTypes[this.selectedType];
-    const newTower = new Tower(x, y, config);
+    const newTower = new tower(x, y, config);
 
     if (newTower.isValidPlacement(this.towers)) {
       if (this.state.money >= newTower.cost) {
