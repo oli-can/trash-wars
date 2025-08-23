@@ -1,5 +1,5 @@
 // src/game/tower.js
-import { pathTiles } from '../config/path.js';
+import { path } from '../config/path.js';
 
 export class Tower {
   constructor(x, y, config = {}) {
@@ -30,24 +30,51 @@ export class Tower {
 
 
 
-  isValidPlacement(existingTowers = []) {
-    // Prevent overlap with path
-    for (const segment of pathTiles) {
-      if (this.x > tiles.x && this.x < tiles.x + tiles.width &&
-          this.y > tiles.y && this.y < tiles.y + tiles.height) {
-        return false;
-      }
-    }
+  // Prevent tower overlap with path (treat path as thick line)
+  const roadWidth = 40; // must match your ctx.lineWidth in gameLoop
+  const buffer = roadWidth / 2 + this.radius; 
 
-    // Prevent overlap with other towers
-    for (const tower of existingTowers) {
-      const dx = tower.x - this.x;
-      const dy = tower.y - this.y;
-      if (Math.sqrt(dx * dx + dy * dy) < this.radius * 2) return false;
-    }
+  for (let i = 0; i < path.length - 1; i++) {
+    const p1 = path[i];
+    const p2 = path[i + 1];
 
-    return true;
+    // Distance from tower center to segment (p1 → p2)
+    const dist = this._pointToSegmentDistance(this.x, this.y, p1, p2);
+    if (dist < buffer) return false; // too close to the road
   }
+
+  // Prevent overlap with other towers
+  for (const tower of existingTowers) {
+    const dx = tower.x - this.x;
+    const dy = tower.y - this.y;
+    if (Math.sqrt(dx * dx + dy * dy) < this.radius * 2) return false;
+  }
+
+  return true;
+}
+
+// Helper: distance from a point to a line segment
+_pointToSegmentDistance(px, py, p1, p2) {
+  const A = px - p1.x;
+  const B = py - p1.y;
+  const C = p2.x - p1.x;
+  const D = p2.y - p1.y;
+
+  const dot = A * C + B * D;
+  const lenSq = C * C + D * D;
+  let t = lenSq !== 0 ? dot / lenSq : -1;
+
+  if (t < 0) {
+    return Math.sqrt((px - p1.x) ** 2 + (py - p1.y) ** 2);
+  } else if (t > 1) {
+    return Math.sqrt((px - p2.x) ** 2 + (py - p2.y) ** 2);
+  }
+  return Math.sqrt(
+    (px - (p1.x + t * C)) ** 2 +
+    (py - (p1.y + t * D)) ** 2
+  );
+}
+
 
   update(deltaTime, enemies, bullets) {
     if (!this.isPlaced) return; // Only act if placed
