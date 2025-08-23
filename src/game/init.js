@@ -25,3 +25,13 @@ export function init() {
     c.height = window.innerHeight;
   });
 }
+
+
+// create a tower instance
+const towerManager = new TowerManager(gameState.canvas, gameState.ctx, gameState.path, gameState.state);
+
+// attach event
+document.querySelectorAll(".tower-btn").forEach(btn => {
+  btn.addEventListener("click", () => towerManager.selectTower(btn.dataset.tower));
+});
+
