@@ -30,18 +30,18 @@ export class Tower {
 
 
 
-  // Prevent tower overlap with path (treat path as thick line)
-  const lineWidth = 40; // must match your ctx.lineWidth in gameLoop
-  const buffer = lineWidth / 2 + this.radius; 
+   isValidPlacement(existingTowers = []) {
+    // Prevent overlap with path (treat path as thick line)
+    const roadWidth = 40; // must match ctx.lineWidth in gameLoop
+    const buffer = roadWidth / 2 + this.radius;
 
-  for (let i = 0; i < path.length - 1; i++) {
-    const p1 = path[i];
-    const p2 = path[i + 1];
+    for (let i = 0; i < path.length - 1; i++) {
+      const p1 = path[i];
+      const p2 = path[i + 1];
 
-    // Distance from tower center to segment (p1 → p2)
-    const dist = this._pointToSegmentDistance(this.x, this.y, p1, p2);
-    if (dist < buffer) return false; // too close to the road
-  }
+      const dist = this._pointToSegmentDistance(this.x, this.y, p1, p2);
+      if (dist < buffer) return false; // too close to the road
+    }
 
   // Prevent overlap with other towers
   for (const tower of existingTowers) {
