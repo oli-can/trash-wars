@@ -31,8 +31,8 @@ export class Tower {
 
 
   // Prevent tower overlap with path (treat path as thick line)
-  const roadWidth = 40; // must match your ctx.lineWidth in gameLoop
-  const buffer = roadWidth / 2 + this.radius; 
+  const lineWidth = 40; // must match your ctx.lineWidth in gameLoop
+  const buffer = lineWidth / 2 + this.radius; 
 
   for (let i = 0; i < path.length - 1; i++) {
     const p1 = path[i];
